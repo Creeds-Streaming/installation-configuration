@@ -1,48 +1,39 @@
 - become: yes
   hosts: all
   name: Streaming Setup
-  roles:
-    - geerlingguy.docker
+  # roles:
+  #  - geerlingguy.docker
 
   tasks:
-    - name: Add SSH key 
-      authorized_key:
-        user: root
-        state: present
-        key: "{{ lookup('file', pub_key) }}"
-
-    - name: Update all packages
-      apt:
-        upgrade: dist
-        update_cache: yes
-        cache_valid_time: 3600
-
-    # - name: Install aptitude using apt
-    #   apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
- 
-    # - name: Install required system packages
-    #   apt: name={{ item }} state=latest update_cache=yes
-    #   loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
- 
-    # - name: Add Docker GPG apt Key
-    #   apt_key:
-    #     url: https://download.docker.com/linux/ubuntu/gpg
+    # - name: Add SSH key 
+    #   authorized_key:
+    #     user: root
     #     state: present
- 
-    # - name: Add Docker Repository
-    #   apt_repository:
-    #     repo: deb https://download.docker.com/linux/ubuntu bionic stable
-    #     state: present
- 
-    # - name: Update apt and install docker-ce
-    #   apt: update_cache=yes name=docker-ce state=latest
+    #     key: "{{ lookup('file', pub_key) }}"
 
-    # - name: Copy Private key
+    # - name: Ensure .ssh directory exists.
+    #   file:
+    #     path: /root/.ssh
+    #     state: directory
+    #     mode: 0700
+
+    # - name: Ensure GitHub deploy key is present on the server.
     #   copy:
-    #     src: files/stream_rsa
-    #     dest: ~/.ssh
+    #     content: "{{ lookup('file', pvt_key) }}"
+    #     dest: /root/.ssh/id_rsa
+    #     mode: 0600
     
-    # - name: Copy Private key
-    #   copy:
-    #     src: files/stream_rsa.pub
-    #     dest: ~/.ssh
+    # See: https://stackoverflow.com/a/37096534/100134
+    # - name: Ensure setfacl support is present.
+      # package: name=acl
+
+    # - name: Clone the code repository to the docroot.
+    #   git:
+    #     repo: "https://github.com/Creeds-Streaming/streaming-infrastructure-experimental.git"
+    #     dest: ~/data
+    #     accept_hostkey: yes
+    #     key_file: ~/.ssh/deploy_key
+        
+    - name: Display the config
+      debug:
+        msg: "Hello World"

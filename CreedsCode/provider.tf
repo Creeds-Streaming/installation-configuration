@@ -7,14 +7,12 @@ terraform {
   }
 }
 
+variable "cloudflare_token" {}
+variable "cloudflare_zone" {}
 variable "do_token" {}
-variable "pvt_key" {}
-variable "pub_key" {}
+// variable "pvt_key" {}
+// variable "pub_key" {}
 
 provider "digitalocean" {
   token = var.do_token
-}
-
-data "digitalocean_ssh_key" "terraform" {
-  name = "stream service"
 }
